@@ -17,7 +17,7 @@ class Deck(object):
 
     def print_deck(self):
         for i, icard in enumerate(self._this_deck):
-            print('[' + str(i + 1) + ']', icard.giveCard())
+            print('[' + str(i + 1) + ']', icard.display_card())
 
     def shuffle_deck(self):
         for i in range(len(self._this_deck)):
@@ -51,7 +51,7 @@ class Deck(object):
             sys.exit()
         return removed
 
-    def add_card(self, card):
+    def add_card(self, card, i=0):
         self._this_deck.append(card)
 
     def remove_rand_card(self):
@@ -65,7 +65,7 @@ class Deck(object):
             val = translator[val]
         mysearch = val.lower() + ' of ' + suit.lower()
         for idx, card in enumerate(self._this_deck):
-            if card.giveCard() == mysearch:
+            if card.display_card() == mysearch:
                 return idx
         else:
             return False
@@ -74,7 +74,7 @@ class Deck(object):
         step = 4
         plist = []
         for idx, iCard in enumerate(self._this_deck):
-            plist.append(' '.join(['[' + str(idx + 1) + ']', iCard.giveCard()]))
+            plist.append(' '.join(['[' + str(idx + 1) + ']', iCard.display_card()]))
             if (idx + 1) % 4 == 0:
                 print(self.__make_fancy_line(plist))
                 plist = []
@@ -104,6 +104,8 @@ class Deck(object):
             line += '{:<30}'.format(sub)
         return line
 
+    def get_card_from_deck(self, i=0):
+        return self._this_deck[i]
 
 
 

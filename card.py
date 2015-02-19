@@ -10,7 +10,7 @@ class Card(object):
         self.__val = val
         self.__suit = suit
 
-    def giveCard(self):
+    def display_card(self):
         the_suit = self.__get_suit()
         the_val = self.__get_val()
         return the_val + ' of ' + the_suit
@@ -24,7 +24,7 @@ class Card(object):
     def is_lower(self, other):
         lower_suit = self.is_lower_suit(other)
         lower_val = self.is_lower_val(other)
-        if lowerSuit:
+        if lower_suit:
             return True
         elif lower_val and self.__suit == other.__suit:
             return True
