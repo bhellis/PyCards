@@ -28,7 +28,7 @@ class War(object):
             nhands += 1
             print('Hand Numer %s' % nhands)
             #print('Press C to continue or Q to quit')
-            #pacer = input()
+            #pacer = input('>> ')
             #if pacer.lower() == 'q':
             #    print('-- exiting --')
             #    sys.exit()
@@ -58,13 +58,12 @@ class War(object):
                 print('Player 1 has run out of cards!')
                 for i in range(self.player1.size_of_deck()):
                     self.player1.remove_card()
-                return
             elif not self.player2.size_of_deck() > i + 1:
                 print('Player 2 has run out of cards!')
                 for i in range(self.player2.size_of_deck()):
                     self.player2.remove_card()
-                return
-            self.__declare_winning_hand(i + 1)
+            else:
+                self.__declare_winning_hand(i + 1)
 
     def __game_over(self):
         if self.player1.size_of_deck() == 0:
