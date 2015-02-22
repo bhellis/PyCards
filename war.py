@@ -13,7 +13,6 @@ class War(object):
         self.player2 = hand.Hand()
         self.__deal_card(my_deck, self.player1)
         self.__deal_card(my_deck, self.player2)
-        #myDeck.add_card(self.player1._myDeck[0])
         if my_deck.size_of_deck() == 0:
             del my_deck
         else:
@@ -24,30 +23,48 @@ class War(object):
             player_deck.add_card(total_deck.remove_card())
 
     def play_game(self):
+        nhands = 0
         while not self.__game_over():
-            p1card = self.player1.get_card_from_deck()
-            p2card = self.player2.get_card_from_deck()
-            print('Number of cards for Player 1: ', self.player1.size_of_deck())
-            print('Number of cards for Player 2: ', self.player2.size_of_deck())
-            print('Player 1 card: ', p1card.display_card())
-            print('Player 2 card: ', p2card.display_card())
-            if p1card.is_lower_val(p2card):
-                print('Player 2 wins!')
-                self.player2.add_card(self.player1.remove_card(), self.player2.size_of_deck())
-                self.player2.add_card(self.player2.remove_card())
-            elif p2card.is_lower_val(p1card):
-                print('Player 1 wins!')
-                self.player1.add_card(self.player2.remove_card(), self.player1.size_of_deck())
-                self.player1.add_card(self.player1.remove_card())
-            else: ## TIE
-                pass
-            pacer = input('Press C to continue or Q to quit')
-            if pacer.lower() == 'q':
-                print('-- exiting --')
-                sys.exit()
-            elif pacer.lower() not in ['q', 'c']:
-                print(' -- invalid command.  continuing anyway.')
+            nhands += 1
+            print('Hand Numer %s' % nhands)
+            #print('Press C to continue or Q to quit')
+            #pacer = input()
+            #if pacer.lower() == 'q':
+            #    print('-- exiting --')
+            #    sys.exit()
+            #elif pacer.lower() not in ['q', 'c']:
+            #    print(' -- invalid command.  continuing anyway.')
+            self.__play_round()
             print('\n')
+
+    def __play_round(self):
+        print('Number of cards for Player 1: ', self.player1.size_of_deck())
+        print('Number of cards for Player 2: ', self.player2.size_of_deck())
+        self.__declare_winning_hand()
+
+    def __declare_winning_hand(self, i=0):
+        p1card = self.player1.get_card_from_deck(i)
+        p2card = self.player2.get_card_from_deck(i)
+        print('Player 1 card: ', p1card.display_card())
+        print('Player 2 card: ', p2card.display_card())
+        if p2card.is_lower_val(p1card):
+            print('Player 1 wins!')
+            self.__winning_hand(self.player2, self.player1, i)
+        elif p1card.is_lower_val(p2card):
+            print('Player 2 wins!')
+            self.__winning_hand(self.player1, self.player2, i)
+        else:
+            if not self.player1.size_of_deck() > i + 1:
+                print('Player 1 has run out of cards!')
+                for i in range(self.player1.size_of_deck()):
+                    self.player1.remove_card()
+                return
+            elif not self.player2.size_of_deck() > i + 1:
+                print('Player 2 has run out of cards!')
+                for i in range(self.player2.size_of_deck()):
+                    self.player2.remove_card()
+                return
+            self.__declare_winning_hand(i + 1)
 
     def __game_over(self):
         if self.player1.size_of_deck() == 0:
@@ -58,3 +75,14 @@ class War(object):
             return True
         else:
             return False
+
+    def __winning_hand(self, give_from, give_to, i=0):
+        ## modifies list while iterating - generally a bad idea
+        for j in range(i + 1):
+            give_to.add_card(give_from.remove_card(), give_to.size_of_deck())
+            give_to.add_card(give_to.remove_card())
+
+
+
+
+
